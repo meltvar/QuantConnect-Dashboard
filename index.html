@@ -429,12 +429,12 @@
                             <div class="main-stat-label">Total Equity</div>
                         </div>
                         <div class="main-stat">
-                            <div class="main-stat-value">${formatCurrency(live.cash)}</div>
-                            <div class="main-stat-label">Cash</div>
+                            <div class="main-stat-value ${getValueClass(live.netProfit)}">${formatCurrency(live.netProfit)}</div>
+                            <div class="main-stat-label">Net Profit</div>
                         </div>
                         <div class="main-stat">
-                            <div class="main-stat-value">${formatCurrency(live.holdingsValue)}</div>
-                            <div class="main-stat-label">Holdings Value</div>
+                            <div class="main-stat-value ${getValueClass(live.totalReturn)}">${formatPercent(live.totalReturn)}</div>
+                            <div class="main-stat-label">Return</div>
                         </div>
                         <div class="main-stat">
                             <div class="main-stat-value">${live.totalTrades || 0}</div>
@@ -444,8 +444,16 @@
 
                     <div class="metrics-grid">
                         <div class="metric-card">
-                            <div class="metric-label">Net Profit</div>
-                            <div class="metric-value ${getValueClass(live.totalReturn)}">${formatPercent(live.totalReturn)}</div>
+                            <div class="metric-label">Cash</div>
+                            <div class="metric-value">${formatCurrency(live.cash)}</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Holdings Value</div>
+                            <div class="metric-value">${formatCurrency(live.holdingsValue)}</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Starting Capital</div>
+                            <div class="metric-value">${formatCurrency(live.startingCapital)}</div>
                         </div>
                         <div class="metric-card">
                             <div class="metric-label">Sharpe Ratio</div>
@@ -458,10 +466,6 @@
                         <div class="metric-card">
                             <div class="metric-label">Win Rate</div>
                             <div class="metric-value ${getValueClass(live.winRate)}">${formatPercent(live.winRate)}</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">Profit Factor</div>
-                            <div class="metric-value ${getValueClass(live.profitFactor - 1)}">${formatNumber(live.profitFactor)}</div>
                         </div>
                     </div>
 
