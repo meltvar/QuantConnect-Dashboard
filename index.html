@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trading Strategy Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <style>
         :root {
             --bg-primary: #0d1117;
@@ -16,6 +14,7 @@
             --accent-green: #3fb950;
             --accent-red: #f85149;
             --accent-blue: #58a6ff;
+            --accent-yellow: #d29922;
             --border: #30363d;
         }
 
@@ -34,7 +33,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
@@ -46,7 +45,7 @@
         }
 
         header h1 {
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
@@ -70,6 +69,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .project-header h2 {
@@ -77,9 +78,13 @@
             font-weight: 600;
         }
 
-        .live-badge {
-            background: var(--accent-green);
-            color: #000;
+        .project-meta {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .status-badge {
             padding: 0.25rem 0.75rem;
             border-radius: 9999px;
             font-size: 0.75rem;
@@ -87,55 +92,190 @@
             text-transform: uppercase;
         }
 
-        .live-badge.stopped {
-            background: var(--accent-red);
+        .status-badge.running {
+            background: var(--accent-green);
+            color: #000;
         }
 
-        .stats-grid {
+        .status-badge.stopped {
+            background: var(--accent-red);
+            color: #fff;
+        }
+
+        .brokerage-badge {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        /* Main stats row */
+        .main-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--bg-card);
+        }
+
+        .main-stat {
+            text-align: center;
+        }
+
+        .main-stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .main-stat-label {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Performance metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 1rem;
             padding: 1.5rem;
         }
 
-        .stat-card {
+        .metric-card {
             background: var(--bg-card);
             border-radius: 6px;
             padding: 1rem;
             text-align: center;
         }
 
-        .stat-label {
+        .metric-label {
             color: var(--text-secondary);
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             margin-bottom: 0.5rem;
         }
 
-        .stat-value {
-            font-size: 1.5rem;
+        .metric-value {
+            font-size: 1.25rem;
             font-weight: 600;
         }
 
-        .stat-value.positive {
+        .metric-value.positive {
             color: var(--accent-green);
         }
 
-        .stat-value.negative {
+        .metric-value.negative {
             color: var(--accent-red);
         }
 
-        .chart-container {
-            padding: 1.5rem;
-            height: 400px;
-        }
-
-        .chart-title {
-            font-size: 1rem;
-            font-weight: 500;
-            margin-bottom: 1rem;
+        .metric-value.neutral {
             color: var(--text-secondary);
         }
 
+        /* Holdings section */
+        .holdings-section {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .holdings-title {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .holdings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .holdings-table th,
+        .holdings-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .holdings-table th {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .holdings-table td {
+            font-size: 0.875rem;
+        }
+
+        .no-holdings {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* All stats expandable */
+        .all-stats-section {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .all-stats-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            width: 100%;
+            text-align: left;
+        }
+
+        .all-stats-toggle:hover {
+            background: var(--border);
+        }
+
+        .all-stats-content {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .all-stats-content.show {
+            display: block;
+        }
+
+        .all-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .all-stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            background: var(--bg-card);
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .all-stat-key {
+            color: var(--text-secondary);
+        }
+
+        .all-stat-value {
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* No data state */
         .no-data {
             text-align: center;
             padding: 4rem;
@@ -146,41 +286,11 @@
             margin-bottom: 1rem;
         }
 
-        .backtest-tabs {
-            display: flex;
-            gap: 0.5rem;
-            padding: 0 1.5rem;
-            margin-top: 1rem;
-        }
-
-        .backtest-tab {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-bottom: none;
-            border-radius: 6px 6px 0 0;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
+        /* Launched date */
+        .launched-date {
             color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        .backtest-tab.active {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            border-color: var(--accent-blue);
-            border-bottom: 1px solid var(--bg-secondary);
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        footer a {
-            color: var(--accent-blue);
-            text-decoration: none;
+            font-size: 0.75rem;
+            padding: 0 1.5rem 1rem;
         }
 
         @media (max-width: 768px) {
@@ -188,12 +298,16 @@
                 padding: 1rem;
             }
 
-            .stats-grid {
+            .main-stats {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .chart-container {
-                height: 300px;
+            .main-stat-value {
+                font-size: 1.25rem;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -208,7 +322,6 @@
         <main id="dashboardContent">
             <div class="no-data">
                 <h2>Loading dashboard data...</h2>
-                <p>If this persists, check that data/dashboard.json exists.</p>
             </div>
         </main>
 
@@ -218,164 +331,160 @@
     </div>
 
     <script>
-        const charts = {};
+        function formatCurrency(value) {
+            if (value === null || value === undefined || isNaN(value)) return '$0.00';
+            return '$' + value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
 
         function formatPercent(value) {
-            if (value === null || value === undefined || isNaN(value)) return 'N/A';
+            if (value === null || value === undefined || isNaN(value) || value === 0) return 'N/A';
             const sign = value >= 0 ? '+' : '';
             return `${sign}${value.toFixed(2)}%`;
         }
 
         function formatNumber(value, decimals = 2) {
-            if (value === null || value === undefined || isNaN(value)) return 'N/A';
+            if (value === null || value === undefined || isNaN(value) || value === 0) return 'N/A';
             return value.toFixed(decimals);
         }
 
         function getValueClass(value, invert = false) {
-            if (value === null || value === undefined || isNaN(value)) return '';
+            if (value === null || value === undefined || isNaN(value) || value === 0) return 'neutral';
             if (invert) return value <= 0 ? 'positive' : 'negative';
             return value >= 0 ? 'positive' : 'negative';
         }
 
-        function createStatsCard(label, value, formatted, invert = false) {
-            return `
-                <div class="stat-card">
-                    <div class="stat-label">${label}</div>
-                    <div class="stat-value ${getValueClass(value, invert)}">${formatted}</div>
-                </div>
-            `;
-        }
-
-        function createEquityChart(canvasId, equityData, label) {
-            const ctx = document.getElementById(canvasId);
-            if (!ctx || !equityData || equityData.length === 0) return;
-
-            // Convert timestamp to date
-            const data = equityData.map(point => ({
-                x: new Date(point.x * 1000),
-                y: point.y
-            }));
-
-            if (charts[canvasId]) {
-                charts[canvasId].destroy();
-            }
-
-            charts[canvasId] = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: label,
-                        data: data,
-                        borderColor: '#58a6ff',
-                        backgroundColor: 'rgba(88, 166, 255, 0.1)',
-                        fill: true,
-                        tension: 0.1,
-                        pointRadius: 0,
-                        pointHoverRadius: 4,
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: {
-                        intersect: false,
-                        mode: 'index'
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: '#21262d',
-                            titleColor: '#f0f6fc',
-                            bodyColor: '#f0f6fc',
-                            borderColor: '#30363d',
-                            borderWidth: 1,
-                            callbacks: {
-                                label: function(context) {
-                                    return `$${context.parsed.y.toLocaleString()}`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            type: 'time',
-                            time: {
-                                unit: 'month'
-                            },
-                            grid: {
-                                color: '#30363d'
-                            },
-                            ticks: {
-                                color: '#8b949e'
-                            }
-                        },
-                        y: {
-                            grid: {
-                                color: '#30363d'
-                            },
-                            ticks: {
-                                color: '#8b949e',
-                                callback: function(value) {
-                                    return '$' + value.toLocaleString();
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
         function renderProject(project, index) {
-            const hasLive = project.live && project.live.equityCurve && project.live.equityCurve.length > 0;
-            const hasBacktests = project.backtests && project.backtests.length > 0;
+            const live = project.live;
+            if (!live) return '';
 
-            if (!hasLive && !hasBacktests) return '';
+            const statusClass = live.status === 'Running' ? 'running' : 'stopped';
 
-            const primaryResult = hasLive ? project.live : project.backtests[0];
-            const canvasId = `chart-${index}`;
-
-            let liveStatus = '';
-            if (hasLive) {
-                const statusClass = project.live.status === 'Running' ? '' : 'stopped';
-                liveStatus = `<span class="live-badge ${statusClass}">${project.live.status}</span>`;
+            // Holdings table
+            let holdingsHtml = '<p class="no-holdings">No open positions</p>';
+            if (live.holdings && live.holdings.length > 0) {
+                holdingsHtml = `
+                    <table class="holdings-table">
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Quantity</th>
+                                <th>Avg Price</th>
+                                <th>Market Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${live.holdings.map(h => `
+                                <tr>
+                                    <td>${h.symbol}</td>
+                                    <td>${h.quantity.toLocaleString()}</td>
+                                    <td>${formatCurrency(h.avgPrice)}</td>
+                                    <td>${formatCurrency(h.marketValue)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
             }
 
-            let backtestTabs = '';
-            if (hasBacktests && project.backtests.length > 1) {
-                backtestTabs = `
-                    <div class="backtest-tabs">
-                        ${project.backtests.map((bt, i) => `
-                            <button class="backtest-tab ${i === 0 ? 'active' : ''}"
-                                    data-project="${index}" data-backtest="${i}">
-                                ${bt.name || `Backtest ${i + 1}`}
-                            </button>
-                        `).join('')}
+            // All stats
+            let allStatsHtml = '';
+            if (live.allStats && Object.keys(live.allStats).length > 0) {
+                const statsItems = Object.entries(live.allStats)
+                    .map(([key, value]) => `
+                        <div class="all-stat-item">
+                            <span class="all-stat-key">${key}</span>
+                            <span class="all-stat-value">${value}</span>
+                        </div>
+                    `).join('');
+
+                allStatsHtml = `
+                    <div class="all-stats-section">
+                        <button class="all-stats-toggle" onclick="toggleStats(${index})">
+                            Show All Statistics
+                        </button>
+                        <div class="all-stats-content" id="stats-${index}">
+                            <div class="all-stats-grid">
+                                ${statsItems}
+                            </div>
+                        </div>
                     </div>
                 `;
             }
 
             return `
-                <div class="project" id="project-${index}">
+                <div class="project">
                     <div class="project-header">
                         <h2>${project.name}</h2>
-                        ${liveStatus}
+                        <div class="project-meta">
+                            ${live.brokerage ? `<span class="brokerage-badge">${live.brokerage}</span>` : ''}
+                            <span class="status-badge ${statusClass}">${live.status}</span>
+                        </div>
                     </div>
-                    ${backtestTabs}
-                    <div class="stats-grid" id="stats-${index}">
-                        ${createStatsCard('Total Return', primaryResult.totalReturn, formatPercent(primaryResult.totalReturn))}
-                        ${createStatsCard('Sharpe Ratio', primaryResult.sharpeRatio, formatNumber(primaryResult.sharpeRatio))}
-                        ${createStatsCard('Max Drawdown', primaryResult.maxDrawdown, formatPercent(primaryResult.maxDrawdown), true)}
-                        ${createStatsCard('Win Rate', primaryResult.winRate, formatPercent(primaryResult.winRate))}
+
+                    ${live.launched ? `<p class="launched-date">Launched: ${new Date(live.launched).toLocaleString()}</p>` : ''}
+
+                    <div class="main-stats">
+                        <div class="main-stat">
+                            <div class="main-stat-value">${formatCurrency(live.equity)}</div>
+                            <div class="main-stat-label">Total Equity</div>
+                        </div>
+                        <div class="main-stat">
+                            <div class="main-stat-value">${formatCurrency(live.cash)}</div>
+                            <div class="main-stat-label">Cash</div>
+                        </div>
+                        <div class="main-stat">
+                            <div class="main-stat-value">${formatCurrency(live.holdingsValue)}</div>
+                            <div class="main-stat-label">Holdings Value</div>
+                        </div>
+                        <div class="main-stat">
+                            <div class="main-stat-value">${live.totalTrades || 0}</div>
+                            <div class="main-stat-label">Total Trades</div>
+                        </div>
                     </div>
-                    <div class="chart-container">
-                        <div class="chart-title">Equity Curve ${hasLive ? '(Live)' : ''}</div>
-                        <canvas id="${canvasId}"></canvas>
+
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-label">Net Profit</div>
+                            <div class="metric-value ${getValueClass(live.totalReturn)}">${formatPercent(live.totalReturn)}</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Sharpe Ratio</div>
+                            <div class="metric-value ${getValueClass(live.sharpeRatio)}">${formatNumber(live.sharpeRatio)}</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Max Drawdown</div>
+                            <div class="metric-value ${getValueClass(live.maxDrawdown, true)}">${formatPercent(live.maxDrawdown)}</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Win Rate</div>
+                            <div class="metric-value ${getValueClass(live.winRate)}">${formatPercent(live.winRate)}</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Profit Factor</div>
+                            <div class="metric-value ${getValueClass(live.profitFactor - 1)}">${formatNumber(live.profitFactor)}</div>
+                        </div>
                     </div>
+
+                    <div class="holdings-section">
+                        <h3 class="holdings-title">Current Holdings</h3>
+                        ${holdingsHtml}
+                    </div>
+
+                    ${allStatsHtml}
                 </div>
             `;
+        }
+
+        function toggleStats(index) {
+            const content = document.getElementById(`stats-${index}`);
+            const button = content.previousElementSibling;
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                button.textContent = 'Show All Statistics';
+            } else {
+                content.classList.add('show');
+                button.textContent = 'Hide Statistics';
+            }
         }
 
         async function loadDashboard() {
@@ -398,8 +507,8 @@
                 if (!data.projects || data.projects.length === 0) {
                     content.innerHTML = `
                         <div class="no-data">
-                            <h2>No Strategy Data Found</h2>
-                            <p>Run the fetch_data.py script to pull your QuantConnect statistics.</p>
+                            <h2>No Live Algorithms Found</h2>
+                            <p>No running paper trading or live algorithms detected.</p>
                         </div>
                     `;
                     return;
@@ -407,65 +516,18 @@
 
                 content.innerHTML = data.projects.map((p, i) => renderProject(p, i)).join('');
 
-                // Create charts
-                data.projects.forEach((project, index) => {
-                    const hasLive = project.live && project.live.equityCurve && project.live.equityCurve.length > 0;
-                    const primaryResult = hasLive ? project.live : (project.backtests[0] || {});
-
-                    if (primaryResult.equityCurve) {
-                        createEquityChart(`chart-${index}`, primaryResult.equityCurve, project.name);
-                    }
-                });
-
-                // Store data for tab switching
-                window.dashboardData = data;
-
-                // Add tab click handlers
-                document.querySelectorAll('.backtest-tab').forEach(tab => {
-                    tab.addEventListener('click', function() {
-                        const projectIdx = parseInt(this.dataset.project);
-                        const backtestIdx = parseInt(this.dataset.backtest);
-                        switchBacktest(projectIdx, backtestIdx);
-                    });
-                });
-
             } catch (error) {
                 console.error('Error loading dashboard:', error);
                 document.getElementById('dashboardContent').innerHTML = `
                     <div class="no-data">
                         <h2>Error Loading Dashboard</h2>
-                        <p>Could not load data/dashboard.json. Make sure to run fetch_data.py first.</p>
+                        <p>Could not load data/dashboard.json</p>
                         <p style="margin-top: 1rem; font-family: monospace; color: #f85149;">${error.message}</p>
                     </div>
                 `;
             }
         }
 
-        function switchBacktest(projectIdx, backtestIdx) {
-            const project = window.dashboardData.projects[projectIdx];
-            const backtest = project.backtests[backtestIdx];
-
-            // Update active tab
-            document.querySelectorAll(`[data-project="${projectIdx}"]`).forEach(tab => {
-                tab.classList.toggle('active', parseInt(tab.dataset.backtest) === backtestIdx);
-            });
-
-            // Update stats
-            const statsGrid = document.getElementById(`stats-${projectIdx}`);
-            statsGrid.innerHTML = `
-                ${createStatsCard('Total Return', backtest.totalReturn, formatPercent(backtest.totalReturn))}
-                ${createStatsCard('Sharpe Ratio', backtest.sharpeRatio, formatNumber(backtest.sharpeRatio))}
-                ${createStatsCard('Max Drawdown', backtest.maxDrawdown, formatPercent(backtest.maxDrawdown), true)}
-                ${createStatsCard('Win Rate', backtest.winRate, formatPercent(backtest.winRate))}
-            `;
-
-            // Update chart
-            if (backtest.equityCurve) {
-                createEquityChart(`chart-${projectIdx}`, backtest.equityCurve, backtest.name);
-            }
-        }
-
-        // Load on page ready
         document.addEventListener('DOMContentLoaded', loadDashboard);
     </script>
 </body>
