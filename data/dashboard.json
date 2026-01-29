@@ -1,52 +1,32 @@
 {
-  "generated": "2026-01-29T13:06:14.387096Z",
+  "generated": "2026-01-29T17:46:41.563789Z",
   "projects": [
     {
       "id": 27603300,
-      "name": "Project 27603300",
-      "backtests": [],
+      "name": "ES-NQ_Trailing-Stop_Long-Only_Paper",
       "live": {
+        "equity": 111899.2,
+        "cash": 111899.2,
+        "holdingsValue": 0,
+        "holdings": [],
+        "totalReturn": 0.0,
+        "sharpeRatio": 0.0,
+        "maxDrawdown": 0.0,
+        "winRate": 0.0,
+        "totalTrades": 0,
+        "profitFactor": 0.0,
+        "launched": "2026-01-21 15:03:53",
+        "allStats": {
+          "return": 11.9,
+          "holdings": null,
+          "sharpe": null,
+          "equity": 111899,
+          "sparkline": []
+        },
         "status": "Running",
         "deployId": "L-a9acc4b07d0aa0b29e200dc93f358788",
-        "totalReturn": 0,
-        "sharpeRatio": 0,
-        "maxDrawdown": 0,
-        "winRate": 0,
-        "equityCurve": []
+        "brokerage": "PaperBrokerage"
       }
-    },
-    {
-      "id": 27618526,
-      "name": "Hyper-Active Red-Orange Cow",
-      "backtests": [
-        {
-          "totalReturn": 960.917,
-          "sharpeRatio": 0.932,
-          "maxDrawdown": 57.3,
-          "winRate": 43.0,
-          "profitFactor": 1.53,
-          "totalTrades": 3391,
-          "equityCurve": [],
-          "startDate": "2026-01-22 06:56:32",
-          "endDate": true,
-          "name": "Logical Asparagus Armadillo",
-          "id": "ce53f60a449a6f411b5b9faafdef24b1"
-        },
-        {
-          "totalReturn": -5.124,
-          "sharpeRatio": -0.377,
-          "maxDrawdown": 17.8,
-          "winRate": 46.0,
-          "profitFactor": 1.08,
-          "totalTrades": 86,
-          "equityCurve": [],
-          "startDate": "2026-01-22 06:49:36",
-          "endDate": true,
-          "name": "Casual Yellow Green Giraffe",
-          "id": "e23c68f5cdd3865212656db7ea5c7bbb"
-        }
-      ],
-      "live": null
     }
   ]
 }
