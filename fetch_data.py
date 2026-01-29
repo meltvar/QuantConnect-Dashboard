@@ -93,10 +93,10 @@ def fetch_live_list(user_id: str, api_token: str) -> list:
 
 def fetch_live_details(project_id: int, deploy_id: str, user_id: str, api_token: str) -> dict:
     """Fetch detailed live trading results."""
-    result = api_request(f"live/read&projectId={project_id}&deployId={deploy_id}", user_id, api_token)
+    result = api_request(f"live/read?projectId={project_id}&deployId={deploy_id}", user_id, api_token)
     if not result.get("success"):
         # Try alternative endpoint format
-        result = api_request(f"live/read&projectId={project_id}", user_id, api_token)
+        result = api_request(f"live/read?projectId={project_id}", user_id, api_token)
     if not result.get("success"):
         print(f"Failed to fetch live details: {result.get('errors', 'Unknown error')}")
         return {}
@@ -105,7 +105,7 @@ def fetch_live_details(project_id: int, deploy_id: str, user_id: str, api_token:
 
 def fetch_backtests(project_id: int, user_id: str, api_token: str) -> list:
     """Fetch all backtests for a project."""
-    result = api_request(f"backtests/read&projectId={project_id}", user_id, api_token)
+    result = api_request(f"backtests/read?projectId={project_id}", user_id, api_token)
     if not result.get("success"):
         return []
     return result.get("backtests", [])
@@ -113,7 +113,7 @@ def fetch_backtests(project_id: int, user_id: str, api_token: str) -> list:
 
 def fetch_backtest_details(project_id: int, backtest_id: str, user_id: str, api_token: str) -> dict:
     """Fetch detailed backtest results including equity curve."""
-    result = api_request(f"backtests/read&projectId={project_id}&backtestId={backtest_id}", user_id, api_token)
+    result = api_request(f"backtests/read?projectId={project_id}&backtestId={backtest_id}", user_id, api_token)
     if not result.get("success"):
         return {}
     return result.get("backtest", {})
