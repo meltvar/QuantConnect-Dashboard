@@ -6,9 +6,9 @@ on:
     - cron: '0 */6 * * *'
   # Allow manual trigger
   workflow_dispatch:
-  # Run on push to main (for initial setup)
+  # Run on push to master (for initial setup)
   push:
-    branches: [main]
+    branches: [master]
 
 permissions:
   contents: write
@@ -52,10 +52,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: master
 
       - name: Pull latest changes
-        run: git pull origin main
+        run: git pull origin master
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
