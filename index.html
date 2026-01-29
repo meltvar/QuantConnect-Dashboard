@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Strategy Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #21262d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --accent-green: #3fb950;
+            --accent-red: #f85149;
+            --accent-blue: #58a6ff;
+            --border: #30363d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .last-updated {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .project {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .project-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .live-badge {
+            background: var(--accent-green);
+            color: #000;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .live-badge.stopped {
+            background: var(--accent-red);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 6px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .stat-value.positive {
+            color: var(--accent-green);
+        }
+
+        .stat-value.negative {
+            color: var(--accent-red);
+        }
+
+        .chart-container {
+            padding: 1.5rem;
+            height: 400px;
+        }
+
+        .chart-title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-secondary);
+        }
+
+        .no-data h2 {
+            margin-bottom: 1rem;
+        }
+
+        .backtest-tabs {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .backtest-tab {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .backtest-tab.active {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-color: var(--accent-blue);
+            border-bottom: 1px solid var(--bg-secondary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Trading Strategy Dashboard</h1>
+            <p class="last-updated" id="lastUpdated">Loading...</p>
+        </header>
+
+        <main id="dashboardContent">
+            <div class="no-data">
+                <h2>Loading dashboard data...</h2>
+                <p>If this persists, check that data/dashboard.json exists.</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>Data sourced from QuantConnect. Dashboard updates automatically via GitHub Actions.</p>
+        </footer>
+    </div>
+
+    <script>
+        const charts = {};
+
+        function formatPercent(value) {
+            if (value === null || value === undefined || isNaN(value)) return 'N/A';
+            const sign = value >= 0 ? '+' : '';
+            return `${sign}${value.toFixed(2)}%`;
+        }
+
+        function formatNumber(value, decimals = 2) {
+            if (value === null || value === undefined || isNaN(value)) return 'N/A';
+            return value.toFixed(decimals);
+        }
+
+        function getValueClass(value, invert = false) {
+            if (value === null || value === undefined || isNaN(value)) return '';
+            if (invert) return value <= 0 ? 'positive' : 'negative';
+            return value >= 0 ? 'positive' : 'negative';
+        }
+
+        function createStatsCard(label, value, formatted, invert = false) {
+            return `
+                <div class="stat-card">
+                    <div class="stat-label">${label}</div>
+                    <div class="stat-value ${getValueClass(value, invert)}">${formatted}</div>
+                </div>
+            `;
+        }
+
+        function createEquityChart(canvasId, equityData, label) {
+            const ctx = document.getElementById(canvasId);
+            if (!ctx || !equityData || equityData.length === 0) return;
+
+            // Convert timestamp to date
+            const data = equityData.map(point => ({
+                x: new Date(point.x * 1000),
+                y: point.y
+            }));
+
+            if (charts[canvasId]) {
+                charts[canvasId].destroy();
+            }
+
+            charts[canvasId] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        borderColor: '#58a6ff',
+                        backgroundColor: 'rgba(88, 166, 255, 0.1)',
+                        fill: true,
+                        tension: 0.1,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#21262d',
+                            titleColor: '#f0f6fc',
+                            bodyColor: '#f0f6fc',
+                            borderColor: '#30363d',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    return `$${context.parsed.y.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'month'
+                            },
+                            grid: {
+                                color: '#30363d'
+                            },
+                            ticks: {
+                                color: '#8b949e'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: '#30363d'
+                            },
+                            ticks: {
+                                color: '#8b949e',
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderProject(project, index) {
+            const hasLive = project.live && project.live.equityCurve && project.live.equityCurve.length > 0;
+            const hasBacktests = project.backtests && project.backtests.length > 0;
+
+            if (!hasLive && !hasBacktests) return '';
+
+            const primaryResult = hasLive ? project.live : project.backtests[0];
+            const canvasId = `chart-${index}`;
+
+            let liveStatus = '';
+            if (hasLive) {
+                const statusClass = project.live.status === 'Running' ? '' : 'stopped';
+                liveStatus = `<span class="live-badge ${statusClass}">${project.live.status}</span>`;
+            }
+
+            let backtestTabs = '';
+            if (hasBacktests && project.backtests.length > 1) {
+                backtestTabs = `
+                    <div class="backtest-tabs">
+                        ${project.backtests.map((bt, i) => `
+                            <button class="backtest-tab ${i === 0 ? 'active' : ''}"
+                                    data-project="${index}" data-backtest="${i}">
+                                ${bt.name || `Backtest ${i + 1}`}
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="project" id="project-${index}">
+                    <div class="project-header">
+                        <h2>${project.name}</h2>
+                        ${liveStatus}
+                    </div>
+                    ${backtestTabs}
+                    <div class="stats-grid" id="stats-${index}">
+                        ${createStatsCard('Total Return', primaryResult.totalReturn, formatPercent(primaryResult.totalReturn))}
+                        ${createStatsCard('Sharpe Ratio', primaryResult.sharpeRatio, formatNumber(primaryResult.sharpeRatio))}
+                        ${createStatsCard('Max Drawdown', primaryResult.maxDrawdown, formatPercent(primaryResult.maxDrawdown), true)}
+                        ${createStatsCard('Win Rate', primaryResult.winRate, formatPercent(primaryResult.winRate))}
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">Equity Curve ${hasLive ? '(Live)' : ''}</div>
+                        <canvas id="${canvasId}"></canvas>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function loadDashboard() {
+            try {
+                const response = await fetch('data/dashboard.json');
+                if (!response.ok) throw new Error('Failed to load data');
+
+                const data = await response.json();
+
+                // Update timestamp
+                const lastUpdated = document.getElementById('lastUpdated');
+                if (data.generated) {
+                    const date = new Date(data.generated);
+                    lastUpdated.textContent = `Last updated: ${date.toLocaleString()}`;
+                }
+
+                // Render projects
+                const content = document.getElementById('dashboardContent');
+
+                if (!data.projects || data.projects.length === 0) {
+                    content.innerHTML = `
+                        <div class="no-data">
+                            <h2>No Strategy Data Found</h2>
+                            <p>Run the fetch_data.py script to pull your QuantConnect statistics.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                content.innerHTML = data.projects.map((p, i) => renderProject(p, i)).join('');
+
+                // Create charts
+                data.projects.forEach((project, index) => {
+                    const hasLive = project.live && project.live.equityCurve && project.live.equityCurve.length > 0;
+                    const primaryResult = hasLive ? project.live : (project.backtests[0] || {});
+
+                    if (primaryResult.equityCurve) {
+                        createEquityChart(`chart-${index}`, primaryResult.equityCurve, project.name);
+                    }
+                });
+
+                // Store data for tab switching
+                window.dashboardData = data;
+
+                // Add tab click handlers
+                document.querySelectorAll('.backtest-tab').forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        const projectIdx = parseInt(this.dataset.project);
+                        const backtestIdx = parseInt(this.dataset.backtest);
+                        switchBacktest(projectIdx, backtestIdx);
+                    });
+                });
+
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                document.getElementById('dashboardContent').innerHTML = `
+                    <div class="no-data">
+                        <h2>Error Loading Dashboard</h2>
+                        <p>Could not load data/dashboard.json. Make sure to run fetch_data.py first.</p>
+                        <p style="margin-top: 1rem; font-family: monospace; color: #f85149;">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function switchBacktest(projectIdx, backtestIdx) {
+            const project = window.dashboardData.projects[projectIdx];
+            const backtest = project.backtests[backtestIdx];
+
+            // Update active tab
+            document.querySelectorAll(`[data-project="${projectIdx}"]`).forEach(tab => {
+                tab.classList.toggle('active', parseInt(tab.dataset.backtest) === backtestIdx);
+            });
+
+            // Update stats
+            const statsGrid = document.getElementById(`stats-${projectIdx}`);
+            statsGrid.innerHTML = `
+                ${createStatsCard('Total Return', backtest.totalReturn, formatPercent(backtest.totalReturn))}
+                ${createStatsCard('Sharpe Ratio', backtest.sharpeRatio, formatNumber(backtest.sharpeRatio))}
+                ${createStatsCard('Max Drawdown', backtest.maxDrawdown, formatPercent(backtest.maxDrawdown), true)}
+                ${createStatsCard('Win Rate', backtest.winRate, formatPercent(backtest.winRate))}
+            `;
+
+            // Update chart
+            if (backtest.equityCurve) {
+                createEquityChart(`chart-${projectIdx}`, backtest.equityCurve, backtest.name);
+            }
+        }
+
+        // Load on page ready
+        document.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+</body>
+</html>
