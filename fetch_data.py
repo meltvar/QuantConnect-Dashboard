@@ -64,7 +64,7 @@ def fetch_live_list(user_id: str, api_token: str) -> list:
     """Fetch all live/paper trading algorithms with their statistics."""
     result = api_request("live/list", user_id, api_token)
     if not result.get("success"):
-        print(f"Failed to fetch live algorithms: {result.get('errors', 'Unknown error')}")
+        print(f"Failed to fetch live algorithm: {result.get('errors', 'Unknown error')}")
         return []
     return result.get("live", [])
 
