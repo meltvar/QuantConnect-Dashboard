@@ -1,5 +1,5 @@
 {
-  "generated": "2026-01-29T09:21:05.412378Z",
+  "generated": "2026-01-29T09:38:37.534852Z",
   "projects": [
     {
       "id": 27603300,
@@ -14,6 +14,39 @@
         "winRate": 0,
         "equityCurve": []
       }
+    },
+    {
+      "id": 27618526,
+      "name": "Hyper-Active Red-Orange Cow",
+      "backtests": [
+        {
+          "totalReturn": 960.917,
+          "sharpeRatio": 0.932,
+          "maxDrawdown": 57.3,
+          "winRate": 43.0,
+          "profitFactor": 1.53,
+          "totalTrades": 3391,
+          "equityCurve": [],
+          "startDate": "2026-01-22 06:56:32",
+          "endDate": true,
+          "name": "Logical Asparagus Armadillo",
+          "id": "ce53f60a449a6f411b5b9faafdef24b1"
+        },
+        {
+          "totalReturn": -5.124,
+          "sharpeRatio": -0.377,
+          "maxDrawdown": 17.8,
+          "winRate": 46.0,
+          "profitFactor": 1.08,
+          "totalTrades": 86,
+          "equityCurve": [],
+          "startDate": "2026-01-22 06:49:36",
+          "endDate": true,
+          "name": "Casual Yellow Green Giraffe",
+          "id": "e23c68f5cdd3865212656db7ea5c7bbb"
+        }
+      ],
+      "live": null
     }
   ]
 }
