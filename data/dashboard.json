@@ -1,5 +1,5 @@
 {
-  "generated": "2026-01-30T18:50:38.435394Z",
+  "generated": "2026-01-31T02:21:43.371090Z",
   "projects": [
     {
       "id": 27603300,
@@ -11,7 +11,7 @@
         "holdings": [],
         "startingCapital": 100000.0,
         "netProfit": 11899.199999999997,
-        "totalReturn": 10.0,
+        "totalReturn": 11.0,
         "sharpeRatio": 0.0,
         "maxDrawdown": 0.0,
         "winRate": 0.0,
@@ -19,7 +19,7 @@
         "profitFactor": 0.0,
         "launched": "2026-01-21 15:03:53",
         "allStats": {
-          "return": 10,
+          "return": 11,
           "holdings": null,
           "sharpe": null,
           "equity": 111899,
