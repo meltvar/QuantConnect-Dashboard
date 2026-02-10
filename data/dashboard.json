@@ -1,17 +1,17 @@
 {
-  "generated": "2026-02-10T07:10:43.105426Z",
+  "generated": "2026-02-10T13:23:03.809161Z",
   "projects": [
     {
       "id": 27603300,
       "name": "ES-NQ_Trailing-Stop_Long-Only_Paper",
       "live": {
-        "equity": 114474.5,
+        "equity": 114414.5,
         "cash": 114844.15,
         "holdingsValue": 0.0,
         "holdings": [],
         "startingCapital": 100000.0,
-        "netProfit": 14474.5,
-        "totalReturn": -2.58,
+        "netProfit": 14414.5,
+        "totalReturn": -2.08,
         "sharpeRatio": 0.0,
         "maxDrawdown": 0.0,
         "winRate": 0.0,
@@ -19,10 +19,10 @@
         "profitFactor": 0.0,
         "launched": "2026-01-21 15:03:53",
         "allStats": {
-          "return": -2.58,
-          "holdings": 506578,
+          "return": -2.08,
+          "holdings": 506518,
           "sharpe": null,
-          "equity": 114560,
+          "equity": 114685,
           "sparkline": []
         },
         "status": "Running",
