@@ -1,5 +1,5 @@
 {
-  "generated": "2026-02-12T07:06:49.834007Z",
+  "generated": "2026-02-12T13:17:33.713241Z",
   "projects": [
     {
       "id": 27603300,
@@ -25,7 +25,7 @@
           "equity": 114481,
           "sparkline": []
         },
-        "status": "Running",
+        "status": "RuntimeError",
         "deployId": "L-a9acc4b07d0aa0b29e200dc93f358788",
         "brokerage": "PaperBrokerage"
       }
