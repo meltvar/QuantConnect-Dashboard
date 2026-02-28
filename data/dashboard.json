@@ -1,6 +1,35 @@
 {
-  "generated": "2026-02-27T18:51:11.522747Z",
+  "generated": "2026-02-28T02:10:20.054314Z",
   "projects": [
+    {
+      "id": 27603300,
+      "name": "ES-NQ_Trailing-Stop_Long-Only_Paper",
+      "live": {
+        "equity": 102391.4,
+        "cash": 99995.7,
+        "holdingsValue": 0.0,
+        "holdings": [],
+        "startingCapital": 100000.0,
+        "netProfit": 2391.399999999994,
+        "totalReturn": -2.92,
+        "sharpeRatio": 0.0,
+        "maxDrawdown": 0.0,
+        "winRate": 0.0,
+        "totalTrades": 0,
+        "profitFactor": 0.0,
+        "launched": "2026-02-27 23:26:10",
+        "allStats": {
+          "return": -2.92,
+          "holdings": 842806,
+          "sharpe": null,
+          "equity": 102391,
+          "sparkline": []
+        },
+        "status": "Running",
+        "deployId": "L-bfd9cb806999faffd2440025a428c7ae",
+        "brokerage": "PaperBrokerage"
+      }
+    },
     {
       "id": 27603300,
       "name": "ES-NQ_Trailing-Stop_Long-Only_Paper",
@@ -11,7 +40,7 @@
         "holdings": [],
         "startingCapital": 100000.0,
         "netProfit": -2681.100000000006,
-        "totalReturn": -8.87,
+        "totalReturn": -2.92,
         "sharpeRatio": 0.0,
         "maxDrawdown": 0.0,
         "winRate": 0.0,
@@ -19,10 +48,10 @@
         "profitFactor": 0.0,
         "launched": "2026-02-14 03:51:29",
         "allStats": {
-          "return": -8.87,
-          "holdings": 837753,
+          "return": -2.92,
+          "holdings": 842806,
           "sharpe": null,
-          "equity": 97319,
+          "equity": 102391,
           "sparkline": []
         },
         "status": "Liquidated",
@@ -40,7 +69,7 @@
         "holdings": [],
         "startingCapital": 100000.0,
         "netProfit": -4521.100000000006,
-        "totalReturn": -8.87,
+        "totalReturn": -2.92,
         "sharpeRatio": 0.0,
         "maxDrawdown": 0.0,
         "winRate": 0.0,
@@ -48,10 +77,10 @@
         "profitFactor": 0.0,
         "launched": "2026-02-12 13:21:54",
         "allStats": {
-          "return": -8.87,
-          "holdings": 837753,
+          "return": -2.92,
+          "holdings": 842806,
           "sharpe": null,
-          "equity": 97319,
+          "equity": 102391,
           "sparkline": []
         },
         "status": "Liquidated",
@@ -69,7 +98,7 @@
         "holdings": [],
         "startingCapital": 100000.0,
         "netProfit": 14595.899999999994,
-        "totalReturn": -8.87,
+        "totalReturn": -2.92,
         "sharpeRatio": 0.0,
         "maxDrawdown": 0.0,
         "winRate": 0.0,
@@ -77,10 +106,10 @@
         "profitFactor": 0.0,
         "launched": "2026-01-21 15:03:53",
         "allStats": {
-          "return": -8.87,
-          "holdings": 837753,
+          "return": -2.92,
+          "holdings": 842806,
           "sharpe": null,
-          "equity": 97319,
+          "equity": 102391,
           "sparkline": []
         },
         "status": "RuntimeError",
