@@ -1,16 +1,16 @@
 {
-  "generated": "2026-03-09T02:32:46.551761Z",
+  "generated": "2026-03-09T07:07:27.137443Z",
   "projects": [
     {
       "id": 27603300,
       "name": "ES-NQ_Trailing-Stop_Long-Only_Paper",
       "live": {
-        "equity": 64308.8,
-        "cash": 71860.95,
+        "equity": 66508.8,
+        "cash": 65317.2,
         "holdingsValue": 0.0,
         "holdings": [],
         "startingCapital": 100000.0,
-        "netProfit": -35691.2,
+        "netProfit": -33491.2,
         "totalReturn": -32.0,
         "sharpeRatio": 0.0,
         "maxDrawdown": 0.0,
@@ -35,7 +35,7 @@
       "name": "ES-NQ_Trailing-Stop_Long-Only_Paper",
       "live": {
         "equity": 97318.9,
-        "cash": 71860.95,
+        "cash": 65317.2,
         "holdingsValue": 0.0,
         "holdings": [],
         "startingCapital": 100000.0,
@@ -64,7 +64,7 @@
       "name": "ES-NQ_Trailing-Stop_Long-Only_Paper",
       "live": {
         "equity": 95478.9,
-        "cash": 71860.95,
+        "cash": 65317.2,
         "holdingsValue": 0.0,
         "holdings": [],
         "startingCapital": 100000.0,
@@ -93,7 +93,7 @@
       "name": "ES-NQ_Trailing-Stop_Long-Only_Paper",
       "live": {
         "equity": 114595.9,
-        "cash": 71860.95,
+        "cash": 65317.2,
         "holdingsValue": 0.0,
         "holdings": [],
         "startingCapital": 100000.0,
