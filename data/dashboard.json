@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-17T19:07:07.902798Z",
+  "generated": "2026-03-18T02:35:24.810385Z",
   "projects": [
     {
       "id": 27603300,
@@ -11,7 +11,7 @@
         "holdings": [],
         "startingCapital": 100000.0,
         "netProfit": -33099.899999999994,
-        "totalReturn": 1.1,
+        "totalReturn": -33.09989999999999,
         "sharpeRatio": 0.0,
         "maxDrawdown": 0.0,
         "winRate": 0.0,
@@ -19,10 +19,10 @@
         "profitFactor": 0.0,
         "launched": "2026-02-27 23:26:10",
         "allStats": {
-          "return": 1.1,
+          "return": 0,
           "holdings": null,
           "sharpe": null,
-          "equity": 81883,
+          "equity": 66900,
           "sparkline": []
         },
         "status": "Running",
@@ -40,7 +40,7 @@
         "holdings": [],
         "startingCapital": 100000.0,
         "netProfit": -2681.100000000006,
-        "totalReturn": 1.1,
+        "totalReturn": -2.681100000000003,
         "sharpeRatio": 0.0,
         "maxDrawdown": 0.0,
         "winRate": 0.0,
@@ -48,10 +48,10 @@
         "profitFactor": 0.0,
         "launched": "2026-02-14 03:51:29",
         "allStats": {
-          "return": 1.1,
+          "return": 0,
           "holdings": null,
           "sharpe": null,
-          "equity": 81883,
+          "equity": 66900,
           "sparkline": []
         },
         "status": "Liquidated",
@@ -69,7 +69,7 @@
         "holdings": [],
         "startingCapital": 100000.0,
         "netProfit": -4521.100000000006,
-        "totalReturn": 1.1,
+        "totalReturn": -4.521100000000011,
         "sharpeRatio": 0.0,
         "maxDrawdown": 0.0,
         "winRate": 0.0,
@@ -77,10 +77,10 @@
         "profitFactor": 0.0,
         "launched": "2026-02-12 13:21:54",
         "allStats": {
-          "return": 1.1,
+          "return": 0,
           "holdings": null,
           "sharpe": null,
-          "equity": 81883,
+          "equity": 66900,
           "sparkline": []
         },
         "status": "Liquidated",
@@ -98,7 +98,7 @@
         "holdings": [],
         "startingCapital": 100000.0,
         "netProfit": 14595.899999999994,
-        "totalReturn": 1.1,
+        "totalReturn": 14.595899999999995,
         "sharpeRatio": 0.0,
         "maxDrawdown": 0.0,
         "winRate": 0.0,
@@ -106,10 +106,10 @@
         "profitFactor": 0.0,
         "launched": "2026-01-21 15:03:53",
         "allStats": {
-          "return": 1.1,
+          "return": 0,
           "holdings": null,
           "sharpe": null,
-          "equity": 81883,
+          "equity": 66900,
           "sparkline": []
         },
         "status": "RuntimeError",
